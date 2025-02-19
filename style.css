@@ -39,13 +39,26 @@ h2 {
     transition: transform 0.5s ease;
 }
 
+/* 針對 food 和 trip 的圖片間隔增加 */
+#food .slider-track img,
+#trip .slider-track img {
+    margin: 0 15px; /* 增加這裡的數值來增加圖片之間的間隔 */
+}
+
+/* 確保其他區塊的圖片不受影響 */
 .slider-track img {
     width: 100%;  /* Make images take the full width of the container */
     max-width: 300px; /* Adjust this width to match your design needs */
     height: auto;
-    margin: 0 5px;
+    margin: 0 5px; /* 預設間距，避免影響其他區塊 */
     border-radius: 10px;
     object-fit: cover;
+    transition: transform 0.3s ease; /* 添加過渡效果 */
+}
+
+/* 當鼠標移到圖片上時，圖片會稍微放大 */
+.slider-track img:hover {
+    transform: scale(1.1); /* 使圖片放大 1.1 倍 */
 }
 
 /* Left and right arrow buttons */
@@ -89,7 +102,7 @@ h2 {
 .music-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 100px;
     margin-top: 20px;
 }
 
@@ -105,4 +118,27 @@ h2 {
 /* Ensure bottom margin for last section */
 .slider-container:last-of-type {
     margin-bottom: 30px;
+}
+
+/* 響應式設計 - 手機版修正 */
+@media (max-width: 768px) {
+    .slider-container {
+        max-width: 95%; /* 讓手機版更寬，避免內容切割 */
+    }
+    .slider-track img {
+        max-width: 90%; /* 讓圖片佔據較大空間 */
+        margin: 0 auto; /* 讓圖片居中 */
+    }
+    .music-container {
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+    }
+    .song {
+        width: 90%; /* 讓音樂區塊適應較小螢幕 */
+    }
+    .slider-btn {
+        font-size: 24px;
+        padding: 8px;
+    }
 }

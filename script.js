@@ -123,4 +123,35 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize the slider by moving to the first image
     moveToIndex(foodTrack, foodIndex, foodImageWidth);
     moveToIndex(tripTrack, tripIndex, tripImageWidth);
+
+    // Weather section
+    const apiKey = '1bf9f3d85355fac048057d20d664366a'; // Your API Key
+    const city = 'New York,US'; // City name
+    const weatherDescription = document.getElementById('weather-description');
+    const weatherTemperature = document.getElementById('weather-temperature');
+
+    // Display loading text until data is fetched
+    weatherDescription.textContent = "Loading weather...";
+    weatherTemperature.textContent = "";
+
+    // Fetch weather data using the OpenWeatherMap API
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=en`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.cod === 200) {
+                // Update the weather section with the fetched data
+                const description = data.weather[0].description;
+                const temperature = data.main.temp;
+                weatherDescription.textContent = `Current Weather: ${description}`;
+                weatherTemperature.textContent = `Temperature: ${temperature}°C`;
+            } else {
+                weatherDescription.textContent = "Failed to load weather data.";
+                weatherTemperature.textContent = "";
+            }
+        })
+        .catch(error => {
+            weatherDescription.textContent = "Failed to load weather data.";
+            weatherTemperature.textContent = "";
+            console.error("Error fetching weather data:", error);
+        });
 });
