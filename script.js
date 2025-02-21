@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Weather section
     const apiKey = '1bf9f3d85355fac048057d20d664366a'; // Your API Key
-    const city = 'New York,US'; // City name
+    const city = 'New York'; // City name
     const weatherDescription = document.getElementById('weather-description');
     const weatherTemperature = document.getElementById('weather-temperature');
 
@@ -136,22 +136,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch weather data using the OpenWeatherMap API
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=en`)
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response Status:', response.status); // Log the response status
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log(data); // Log the full response to check the data structure
             if (data.cod === 200) {
                 // Update the weather section with the fetched data
                 const description = data.weather[0].description;
                 const temperature = data.main.temp;
-                weatherDescription.textContent = `Current Weather: ${description}`;
+                weatherDescription.textContent = `Weather: ${description}`;
                 weatherTemperature.textContent = `Temperature: ${temperature}°C`;
             } else {
-                weatherDescription.textContent = "Failed to load weather data.";
-                weatherTemperature.textContent = "";
+                weatherDescription.textContent = `Error: ${data.message}`;
+                console.error('Error in weather data:', data.message);
             }
         })
         .catch(error => {
             weatherDescription.textContent = "Failed to load weather data.";
-            weatherTemperature.textContent = "";
-            console.error("Error fetching weather data:", error);
+            console.error('Error fetching weather data:', error);
         });
 });
